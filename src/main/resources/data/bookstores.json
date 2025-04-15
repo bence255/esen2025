@@ -1,0 +1,22 @@
+[
+  {
+    "location": "Budapest",
+    "priceModifier": 1.2
+  },
+  {
+    "location": "Debrecen",
+    "priceModifier": 1.1
+  },
+  {
+    "location": "Szeged",
+    "priceModifier": 1.15
+  },
+  {
+    "location": "Győr",
+    "priceModifier": 1.05
+  },
+  {
+    "location": "Pécs",
+    "priceModifier": 1.08
+  }
+]
