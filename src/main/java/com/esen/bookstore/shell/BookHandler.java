@@ -18,7 +18,7 @@ public class BookHandler {
     private final BookService bookService;
 
     @ShellMethod(value = "Creates a book", key = "create book")
-    public void createBook(String title, String author, String publisher, Double price){
+    public void createBook(String title, String author, String publisher, Double price) {
         bookService.save(Book.builder()
                 .title(title)
                 .author(author)
@@ -28,15 +28,15 @@ public class BookHandler {
     }
 
     @ShellMethod(value = "lists all books", key = "list books")
-    public String listBooks(){
+    public String listBooks() {
         return bookService.findAll()
                 .stream()
                 .map(Book::toString)
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 
-    @ShellMethod(value = "Deletes a book by ID",key = "delete book")
-    public void deleteBook(Long id){
+    @ShellMethod(value = "Deletes a book by ID", key = "delete book")
+    public void deleteBook(Long id) {
         bookService.delete(id);
     }
 
@@ -47,7 +47,23 @@ public class BookHandler {
             @ShellOption(defaultValue = ShellOption.NULL) String author,
             @ShellOption(defaultValue = ShellOption.NULL) String publisher,
             @ShellOption(defaultValue = ShellOption.NULL) Double price
-    ){
+    ) {
         return bookService.update(id, title, author, publisher, price).toString();
+    }
+
+    @ShellMethod(value = "Finds prices across stores", key = "find prices")
+    public String findPrices(Long id) {
+        return bookService.findPrices(id).toString();
+    }
+
+    @ShellMethod(value = "Finds prices across stores", key = "filter books")
+    public String filterBook(
+            @ShellOption(defaultValue = ShellOption.NULL) String title,
+            @ShellOption(defaultValue = ShellOption.NULL) String publisher,
+            @ShellOption(defaultValue = ShellOption.NULL) String author
+    ) {
+        return bookService.filterBook(title, publisher, author).stream()
+                .map(Book::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }

@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +34,27 @@ public class BookStoreService {
 
         var bookStore = bookStoreRepository.findById(id).get();
         bookStoreRepository.delete(bookStore);
+    }
+
+    public void save(BookStore bookStore) {
+        bookStoreRepository.save(bookStore);
+    }
+
+    public BookStore update(Long id, String location, Double priceModifier, Double moneyInCashRegister) {
+        if (Stream.of(location,priceModifier,moneyInCashRegister).allMatch(Objects::isNull)) {
+            throw new IllegalArgumentException("At least one input is required");
+        }
+
+        if (!bookStoreRepository.existsById(id)) {
+            throw new IllegalArgumentException("Cannot find book with id" + id);
+        }
+
+        var bookStore = bookStoreRepository.findById(id).get();
+
+        if (location != null) bookStore.setLocation(location);
+        if (priceModifier != null) bookStore.setPriceModifier(priceModifier);
+        if (moneyInCashRegister != null) bookStore.setMoneyInCashRegister(moneyInCashRegister);
+
+        return bookStoreRepository.save(bookStore);
     }
 }
